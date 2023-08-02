@@ -67,12 +67,37 @@ public class ManagerDaoHibernateImpl implements ManagerDao {
 
     @Override
     public boolean deleteByName(String managerName) {
-    return false;
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        int deletedCount = session.createQuery("DELETE FROM Manager m WHERE m.name = :name")
+                .setParameter("name", managerName)
+                .executeUpdate();
+
+        transaction.commit();
+        session.close();
+
+        return deletedCount > 0;
     }
 
     @Override
     public boolean deleteById(Long managerId) {
-        return false;
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        Manager manager = session.get(Manager.class, managerId);
+        if (manager != null) {
+            session.delete(manager);
+            transaction.commit();
+            session.close();
+            return true;
+        } else {
+            transaction.rollback();
+            session.close();
+            return false;
+        }
     }
 
     @Override

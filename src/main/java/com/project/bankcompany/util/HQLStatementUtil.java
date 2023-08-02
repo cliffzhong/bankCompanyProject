@@ -12,6 +12,11 @@ public class HQLStatementUtil {
     public static final String HQL_SELECT_MANAGER_WITH_CLIENTS_BY_MANAGER_ID = "SELECT distinct m FROM Manager as m " +
             "left join fetch m.clientList where m.id = :id";
 
+
+    public static final String HQL_SELECT_ALL_CLIENTS = "From Client";
+    public static final String HQL_SELECT_CLIENT_BY_ID = "FROM Client as c where c.id = :id";
+    public static final String HQL_SELECT_CLIENT_BY_LOGINNAME = "FROM Client as c where c.loginName = :loginName";
+
     public static final String HQL_SELECT_ALL_MAJORS = "From Major";
     public static final String HQL_SELECT_MAJOR_BY_ID = "FROM Major as m where m.id = :id";
     public static final String HQL_SELECT_MAJOR_BY_NAME = "FROM Major as m where m.name = :name";

@@ -35,7 +35,7 @@ public class HibernateUtil {
         String dbUser = "admin";
         String dbPassword = "password";
 
-        String[] modelPackages = {"com.example.demo.entity"};
+        String[] modelPackages = {"com.project.bankcompany.entity"};
 //        String dbDriver = System.getProperty("database.driver");
 //        String dbDialect = System.getProperty("database.dialect");
 //        String dbUrl = System.getProperty("database.url");

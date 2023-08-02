@@ -3,7 +3,9 @@ package com.project.bankcompany.daoimpl.hibernate;
 
 import com.project.bankcompany.dao.hibernate.ClientDao;
 import com.project.bankcompany.entity.Client;
+import com.project.bankcompany.entity.Manager;
 import com.project.bankcompany.util.HibernateUtil;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,13 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Query;
+import org.hibernate.query.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository("ClientDaoHibernateImpl")
 public class ClientDaoHibernateImpl implements ClientDao {
 
-    private Logger logger = LoggerFactory.getLogger(getClass().getName());
+    private Logger logger = LoggerFactory.getLogger(ClientDaoHibernateImpl.class);
 
     @Override
     public Client save(Client client, Long managerId) {
@@ -27,10 +30,14 @@ public class ClientDaoHibernateImpl implements ClientDao {
 
         try {
             transaction = session.beginTransaction();
+            if (managerId != null) {
+                Manager manager = session.get(Manager.class, managerId);
+                client.setManager(manager);
+            }
             session.persist(client);
             transaction.commit();
         } catch (Exception e) {
-            logger.error("fail to insert a Client, error={}", e.getMessage());
+            logger.error("Fail to insert a Client, error={}", e.getMessage());
             if (transaction != null)
                 transaction.rollback();
         } finally {
@@ -51,7 +58,7 @@ public class ClientDaoHibernateImpl implements ClientDao {
             session.saveOrUpdate(client);
             transaction.commit();
         } catch (Exception e) {
-            logger.error("fail to insert a Client, error={}", e.getMessage());
+            logger.error("Fail to update a Client, error={}", e.getMessage());
             if (transaction != null)
                 transaction.rollback();
         } finally {
@@ -59,11 +66,11 @@ public class ClientDaoHibernateImpl implements ClientDao {
         }
 
         return client;
-
     }
 
     @Override
     public boolean deleteByLoginName(String loginName) {
+        boolean deleteResult = false;
         Transaction transaction = null;
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -74,20 +81,21 @@ public class ClientDaoHibernateImpl implements ClientDao {
             query.setParameter("loginName", loginName);
             int rowsAffected = query.executeUpdate();
             transaction.commit();
-            return rowsAffected > 0;
+            deleteResult = rowsAffected > 0;
         } catch (Exception e) {
-            logger.error("Failed to delete Client by loginName, error={}", e.getMessage());
+            logger.error("Fail to delete Client by login name, error={}", e.getMessage());
             if (transaction != null)
                 transaction.rollback();
         } finally {
             session.close();
         }
 
-        return false;
+        return deleteResult;
     }
 
     @Override
     public boolean deleteById(Long clientId) {
+        boolean deleteResult = false;
         Transaction transaction = null;
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -98,22 +106,22 @@ public class ClientDaoHibernateImpl implements ClientDao {
             if (client != null) {
                 session.delete(client);
                 transaction.commit();
-                return true;
+                deleteResult = true;
             }
         } catch (Exception e) {
-            logger.error("Failed to delete Client by ID, error={}", e.getMessage());
+            logger.error("Fail to delete Client by ID, error={}", e.getMessage());
             if (transaction != null)
                 transaction.rollback();
         } finally {
             session.close();
         }
 
-        return false;
+        return deleteResult;
     }
-
 
     @Override
     public boolean delete(Client client) {
+        boolean deleteResult = false;
         Transaction transaction = null;
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -122,143 +130,76 @@ public class ClientDaoHibernateImpl implements ClientDao {
             transaction = session.beginTransaction();
             session.delete(client);
             transaction.commit();
-            return true;
+            deleteResult = true;
         } catch (Exception e) {
-            logger.error("Failed to delete Client, error={}", e.getMessage());
+            logger.error("Fail to delete Client, error={}", e.getMessage());
             if (transaction != null)
                 transaction.rollback();
         } finally {
             session.close();
         }
 
-        return false;
+        return deleteResult;
     }
-
 
     @Override
     public List<Client> getClients() {
-        Transaction transaction = null;
+        List<Client> clientList = null;
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
-
         try {
-            transaction = session.beginTransaction();
-            List<Client> clients = session.createQuery("FROM Client", Client.class).getResultList();
-            transaction.commit();
-            return clients;
-        } catch (Exception e) {
-            logger.error("Failed to fetch Clients, error={}", e.getMessage());
-            if (transaction != null)
-                transaction.rollback();
+            Query query = session.createQuery("FROM Client");
+            clientList = query.list();
+        } catch (HibernateException he) {
+            logger.error("Fail to retrieve all clients, error = {}", he.getMessage());
         } finally {
             session.close();
         }
 
-        return null;
+        if (clientList == null)
+            clientList = new ArrayList<>();
+        return clientList;
     }
-
 
     @Override
     public Client getClientById(Long id) {
-        Transaction transaction = null;
+        Client client = null;
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
-
         try {
-            transaction = session.beginTransaction();
-            Client client = session.get(Client.class, id);
-            transaction.commit();
-            return client;
-        } catch (Exception e) {
-            logger.error("Failed to fetch Client by ID, error={}", e.getMessage());
-            if (transaction != null)
-                transaction.rollback();
+            client = session.get(Client.class, id);
+        } catch (HibernateException he) {
+            logger.error("Fail to retrieve client with ID = {}, error = {}", id, he.getMessage());
         } finally {
             session.close();
         }
-
-        return null;
+        return client;
     }
-
 
     @Override
     public Client getClientByLoginName(String loginName) {
-        Transaction transaction = null;
+        Client client = null;
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
-
         try {
-            transaction = session.beginTransaction();
             Query query = session.createQuery("FROM Client WHERE loginName = :loginName");
             query.setParameter("loginName", loginName);
-            List<Client> clients = query.getResultList();
-            transaction.commit();
-
-            return clients.isEmpty() ? null : clients.get(0);
-        } catch (Exception e) {
-            logger.error("Failed to fetch Client by loginName, error={}", e.getMessage());
-            if (transaction != null)
-                transaction.rollback();
+            client = (Client) query.uniqueResult();
+        } catch (HibernateException he) {
+            logger.error("Fail to retrieve client with login name = {}, error = {}", loginName, he.getMessage());
         } finally {
             session.close();
         }
-
-        return null;
+        return client;
     }
-
-
 
     @Override
     public List<Client> getClientsByManagerId(Long managerId) {
-        Transaction transaction = null;
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.openSession();
-
-        try {
-            transaction = session.beginTransaction();
-            Query query = session.createQuery("FROM Client WHERE manager.id = :managerId");
-            query.setParameter("managerId", managerId);
-            List<Client> clients = query.getResultList();
-            transaction.commit();
-
-            return clients;
-        } catch (Exception e) {
-            logger.error("Failed to fetch Clients by Manager ID, error={}", e.getMessage());
-            if (transaction != null)
-                transaction.rollback();
-        } finally {
-            session.close();
-        }
-
         return null;
     }
-
-
 
     @Override
     public List<Client> getClientsWithAssociatedProducts() {
-        Transaction transaction = null;
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.openSession();
-
-        try {
-            transaction = session.beginTransaction();
-            Query query = session.createQuery("SELECT DISTINCT c FROM Client c LEFT JOIN FETCH c.productList");
-            List<Client> clients = query.getResultList();
-            transaction.commit();
-
-            return clients;
-        } catch (Exception e) {
-            logger.error("Failed to fetch Clients with associated Products, error={}", e.getMessage());
-            if (transaction != null)
-                transaction.rollback();
-        } finally {
-            session.close();
-        }
-
         return null;
     }
-
-
-
 }

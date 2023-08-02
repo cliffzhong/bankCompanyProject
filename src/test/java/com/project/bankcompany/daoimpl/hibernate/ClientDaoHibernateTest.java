@@ -3,6 +3,8 @@ package com.project.bankcompany.daoimpl.hibernate;
 
 import com.project.bankcompany.dao.hibernate.ClientDao;
 import com.project.bankcompany.entity.Client;
+import com.project.bankcompany.entity.Manager;
+import com.project.bankcompany.util.HibernateUtil;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,204 +21,160 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ClientDaoHibernateTest {
 
-    @Mock
-    private SessionFactory sessionFactory;
+    private static ClientDaoHibernateImpl clientDao;
+    private static ManagerDaoHibernateImpl managerDao;
+    private static ProductDaoHibernateImpl productDao;
 
-    @Mock
-    private Session session;
+    @BeforeAll
+    public static void initAll() {
+        clientDao = new ClientDaoHibernateImpl();
+        managerDao = new ManagerDaoHibernateImpl();
+        productDao = new ProductDaoHibernateImpl();
+    }
 
-    @Mock
-    private Transaction transaction;
-
-    @InjectMocks
-    private ClientDaoHibernateImpl clientDaoHibernate;
+    @AfterAll
+    public static void teardownAll() {
+        clientDao = null;
+        managerDao = null;
+        productDao = null;
+    }
 
     @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-        when(sessionFactory.openSession()).thenReturn(session);
-        when(session.getTransaction()).thenReturn(transaction);
+    public void setupEach() {
+    }
+
+    @AfterEach
+    public void cleanupEach() {
     }
 
     @Test
+    @Transactional
     public void testSaveClient() {
-        Client client = createClientByName("abc", 18);
-        doAnswer((Answer<Void>) invocation -> {
-            client.setId(1L);
-            return null;
-        }).when(session).persist(client);
+        Manager manager = createManagerByName("John Doe3");
+        managerDao.save(manager);
 
-        Client savedClient = clientDaoHibernate.save(client, 12L);
+        Client client = createClientByLoginName("client11", manager);
+        clientDao.save(client, manager.getId());
 
-        assertNotNull(savedClient.getId());
-        assertEquals(client.getFirstName(), savedClient.getFirstName());
-        assertEquals(client.getLastName(), savedClient.getLastName());
-
-        verify(session, times(1)).persist(client);
-        verify(transaction, times(1)).commit();
+        assertNotNull(client.getId());
+        assertEquals("client11", client.getLoginName());
+        assertEquals("First", client.getFirstName());
+        assertEquals("Last", client.getLastName());
+        assertEquals("client11@example.com", client.getEmail());
+        assertEquals(manager.getId(), client.getManager().getId());
     }
 
-    @Test
-    public void testUpdateClient() {
-        Client client = createClientByName("abc", 12);
-        doNothing().when(session).saveOrUpdate(client);
-
-        Client updatedClient = clientDaoHibernate.update(client);
-
-        assertNotNull(updatedClient);
-        assertEquals(client.getFirstName(), updatedClient.getFirstName());
-
-        verify(session, times(1)).saveOrUpdate(client);
-        verify(transaction, times(1)).commit();
+    private Manager createManagerByName(String name) {
+        Manager manager = new Manager();
+        manager.setName(name);
+        manager.setDescription(name + " is a manager.");
+        return manager;
     }
 
-    @Test
-    public void testDeleteByLoginName() {
-        String loginName = "user123";
-        Query query = mock(Query.class);
-        when(session.createQuery("DELETE FROM Client WHERE loginName = :loginName")).thenReturn(query);
-        when(query.setParameter("loginName", loginName)).thenReturn(query);
-        when(query.executeUpdate()).thenReturn(1);
-
-        boolean isDeleted = clientDaoHibernate.deleteByLoginName(loginName);
-
-        assertTrue(isDeleted);
-
-        verify(session, times(1)).createQuery("DELETE FROM Client WHERE loginName = :loginName");
-        verify(query, times(1)).setParameter("loginName", loginName);
-        verify(transaction, times(1)).commit();
-    }
-
-    @Test
-    public void testDeleteById() {
-        Long clientId = 1L;
-        Client client = createClientByName("abc", clientId);
-        when(session.get(Client.class, clientId)).thenReturn(client);
-
-        boolean isDeleted = clientDaoHibernate.deleteById(clientId);
-
-        assertTrue(isDeleted);
-
-        verify(session, times(1)).delete(client);
-        verify(transaction, times(1)).commit();
-    }
-
-    @Test
-    public void testDeleteClient() {
-        Client client = createClientByName("abc", 12);
-        doNothing().when(session).delete(client);
-
-        boolean isDeleted = clientDaoHibernate.delete(client);
-
-        assertTrue(isDeleted);
-
-        verify(session, times(1)).delete(client);
-        verify(transaction, times(1)).commit();
+    private Client createClientByLoginName(String loginName, Manager manager) {
+        Client client = new Client();
+        client.setLoginName(loginName);
+        client.setPassword("password123");
+        client.setFirstName("First");
+        client.setLastName("Last");
+        client.setEmail(loginName + "@example.com");
+        client.setEnrolledDate(LocalDate.now());
+        client.setManager(manager);
+        return client;
     }
 
     @Test
     public void testGetClients() {
-        Query query = mock(Query.class);
-        List<Client> clients = List.of(createClientByName("abc", 1), createClientByName("xyz", 2));
-        when(session.createQuery("FROM Client", Client.class)).thenReturn(query);
-        when(query.getResultList()).thenReturn(clients);
-
-        List<Client> retrievedClients = clientDaoHibernate.getClients();
-
-        assertEquals(clients.size(), retrievedClients.size());
-
-        verify(session, times(1)).createQuery("FROM Client", Client.class);
-        verify(transaction, times(1)).commit();
+        List<Client> clientList = clientDao.getClients();
+        assertEquals(3, clientList.size());
     }
 
     @Test
     public void testGetClientById() {
-        Long clientId = 1L;
-        Client client = createClientByName("abc", clientId);
-        when(session.get(Client.class, clientId)).thenReturn(client);
+        Manager manager = createManagerByName("John Doe");
+        managerDao.save(manager);
 
-        Client retrievedClient = clientDaoHibernate.getClientById(clientId);
+        Client client = createClientByLoginName("client1", manager);
+        clientDao.save(client, manager.getId());
 
+        Client retrievedClient = clientDao.getClientById(client.getId());
         assertNotNull(retrievedClient);
-        assertEquals(clientId, retrievedClient.getId());
-
-        verify(session, times(1)).get(Client.class, clientId);
-        verify(transaction, times(1)).commit();
+        assertEquals(client.getId(), retrievedClient.getId());
     }
 
     @Test
     public void testGetClientByLoginName() {
-        String loginName = "user123";
-        List<Client> clients = List.of(createClientByName("John", 1));
-        Query query = mock(Query.class);
-        when(session.createQuery("FROM Client WHERE loginName = :loginName", Client.class)).thenReturn(query);
-        when(query.setParameter("loginName", loginName)).thenReturn(query);
-        when(query.getResultList()).thenReturn(clients);
+        Manager manager = createManagerByName("John Doe");
+        managerDao.save(manager);
 
-        Client retrievedClient = clientDaoHibernate.getClientByLoginName(loginName);
+        Client client = createClientByLoginName("client1", manager);
+        clientDao.save(client, manager.getId());
 
+        Client retrievedClient = clientDao.getClientByLoginName(client.getLoginName());
         assertNotNull(retrievedClient);
-        assertEquals(loginName, retrievedClient.getLoginName());
-
-        verify(session, times(1)).createQuery("FROM Client WHERE loginName = :loginName", Client.class);
-        verify(query, times(1)).setParameter("loginName", loginName);
-        verify(transaction, times(1)).commit();
+        assertEquals(client.getLoginName(), retrievedClient.getLoginName());
     }
 
     @Test
-    public void testGetClientsByManagerId() {
-        Long managerId = 12L;
-        List<Client> clients = List.of(createClientByName("abc", 1), createClientByName("xyz", 2));
-        Query query = mock(Query.class);
-        when(session.createQuery("FROM Client WHERE manager.id = :managerId", Client.class)).thenReturn(query);
-        when(query.setParameter("managerId", managerId)).thenReturn(query);
-        when(query.getResultList()).thenReturn(clients);
+    public void testUpdateClient() {
+        Manager manager = createManagerByName("John Doee");
+        managerDao.getManagerByName(manager.getName());
 
-        List<Client> retrievedClients = clientDaoHibernate.getClientsByManagerId(managerId);
+        Client client = clientDao.getClientByLoginName("client11");
 
-        assertEquals(clients.size(), retrievedClients.size());
+        String newEmail = "updated_client11@example.com";
+        client.setEmail(newEmail);
 
-        verify(session, times(1)).createQuery("FROM Client WHERE manager.id = :managerId", Client.class);
-        verify(query, times(1)).setParameter("managerId", managerId);
-        verify(transaction, times(1)).commit();
+        clientDao.update(client);
+
+        Client updatedClient = clientDao.getClientByLoginName(client.getLoginName());
+        assertEquals(newEmail, updatedClient.getEmail());
     }
 
     @Test
-    public void testGetClientsWithAssociatedProducts() {
-        List<Client> clients = List.of(
-                createClientByName("abc", 1),
-                createClientByName("xyz", 2)
-        );
+    public void testDeleteClient() {
+        Manager manager = createManagerByName("John Doe");
+        managerDao.save(manager);
 
-        Query query = mock(Query.class);
-        when(session.createQuery("SELECT DISTINCT c FROM Client c LEFT JOIN FETCH c.productList", Client.class))
-                .thenReturn(query);
-        when(query.getResultList()).thenReturn(clients);
+        Client client = clientDao.getClientByLoginName("client11");
 
-        List<Client> clientsWithProducts = clientDaoHibernate.getClientsWithAssociatedProducts();
-        assertEquals(2, clientsWithProducts.size());
+        boolean deleteResult = clientDao.delete(client);
+        assertTrue(deleteResult);
 
-        verify(session, times(1)).createQuery("SELECT DISTINCT c FROM Client c LEFT JOIN FETCH c.productList", Client.class);
-        verify(transaction, times(1)).commit();
+        Client deletedClient = clientDao.getClientById(client.getId());
+        assertNull(deletedClient);
     }
 
-    // Utility method to create a test client with the specified name and ID
-    private Client createClientByName(String firstName, long id) {
-        Client client = new Client();
-        client.setId(id);
-        client.setFirstName(firstName);
-        client.setLastName(firstName + "cde");
-        client.setLoginName("1223");
-        client.setEmail("1223");
-        client.setEnrolledDate(LocalDate.now());
-        return client;
+    @Test
+    public void testDeleteClientById() {
+//        Manager manager = createManagerByName("John Doe");
+//        managerDao.save(manager);
+
+        Client client = clientDao.getClientById(20L);
+
+        boolean deleteResult = clientDao.deleteById(client.getId());
+        assertTrue(deleteResult);
+
+        Client deletedClient = clientDao.getClientById(client.getId());
+        assertNull(deletedClient);
     }
 }

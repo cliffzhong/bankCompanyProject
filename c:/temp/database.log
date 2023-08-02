@@ -1,0 +1,10 @@
+2023-08-02T15:13:04.025-0400 ERROR ERROR: duplicate key value violates unique constraint "manager_name_key"
+  Detail: Key (name)=(ddc) already exists.
+2023-08-02T15:24:45.662-0400 ERROR ERROR: duplicate key value violates unique constraint "manager_name_key"
+  Detail: Key (name)=(John Doe) already exists.
+2023-08-02T15:48:11.158-0400 ERROR ERROR: update or delete on table "manager" violates foreign key constraint "client_product_hold" on table "client"
+  Detail: Key (id)=(15) is still referenced from table "client".
+2023-08-02T16:07:36.951-0400 ERROR ERROR: null value in column "manager_id" of relation "client" violates not-null constraint
+  Detail: Failing row contains (22, client11, password123, First, Last, updated_client11@example.com, 2023-08-02, null).
+2023-08-02T16:08:14.048-0400 ERROR ERROR: null value in column "manager_id" of relation "client" violates not-null constraint
+  Detail: Failing row contains (23, client11, password123, First, Last, updated_client11@example.com, 2023-08-02, null).
