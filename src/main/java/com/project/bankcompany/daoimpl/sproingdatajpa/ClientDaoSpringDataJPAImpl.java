@@ -33,42 +33,44 @@ public class ClientDaoSpringDataJPAImpl implements ClientDao {
 
     @Override
     public boolean deleteByLoginName(String loginName) {
-        return false;
+        clientRepository.deleteByLoginName(loginName);
+        return true;
     }
 
     @Override
     public boolean deleteById(Long clientId) {
-        return false;
+        clientRepository.deleteById(clientId);
+        return true;
     }
 
     @Override
     public boolean delete(Client client) {
-        return false;
+        clientRepository.delete(client);
+        return true;
     }
 
     @Override
     public List<Client> getClients() {
-        return null;
+        return clientRepository.findAll();
     }
 
     @Override
     public Client getClientById(Long id) {
-        return null;
+        return clientRepository.findById(id).orElse(null);
     }
 
     @Override
     public Client getClientByLoginName(String loginName) {
-        return null;
+        return clientRepository.findByLoginName(loginName);
     }
 
     @Override
     public List<Client> getClientsByManagerId(Long managerId) {
-        return null;
+        return clientRepository.findClientsByManager_Id(managerId);
     }
 
     @Override
     public List<Client> getClientsWithAssociatedProducts() {
-        return null;
+        return clientRepository.findClientsWithAssociatedProducts();
     }
-
 }

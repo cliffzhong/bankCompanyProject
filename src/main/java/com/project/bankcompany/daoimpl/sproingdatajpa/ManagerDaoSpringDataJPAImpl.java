@@ -108,9 +108,29 @@ public class ManagerDaoSpringDataJPAImpl implements ManagerDao {
 
     @Override
     public Manager getManagerByName(String managerName) {
-        return null;
+        Manager manager = null;
+        try {
+            manager = managerRepository.findByName(managerName);
+        } catch (IllegalArgumentException iae) {
+            logger.error("Caught IllegalArgumentException when trying to find Manager by name={}, error={}", managerName, iae.getMessage());
+        } catch (OptimisticLockingFailureException olfe) {
+            logger.error("Caught OptimisticLockingFailureException when trying to find Manager by name={}, error={}", managerName, olfe.getMessage());
+        }
+        return manager;
     }
 
+
     @Override
-    public Manager getManagerAndClientAndProductWithManagerId(Long id){return null;}
+    public Manager getManagerAndClientAndProductWithManagerId(Long id) {
+        Manager manager = null;
+        try {
+            manager = managerRepository.findByIdWithClientsAndProducts(id);
+        } catch (IllegalArgumentException iae) {
+            logger.error("Caught IllegalArgumentException when trying to find Manager with clients and products by id={}, error={}", id, iae.getMessage());
+        } catch (OptimisticLockingFailureException olfe) {
+            logger.error("Caught OptimisticLockingFailureException when trying to find Manager with clients and products by id={}, error={}", id, olfe.getMessage());
+        }
+        return manager;
+    }
+
 }
