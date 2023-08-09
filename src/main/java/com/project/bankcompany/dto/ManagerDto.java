@@ -2,6 +2,7 @@ package com.project.bankcompany.dto;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.bankcompany.entity.Client;
 import com.project.bankcompany.entity.Manager;
 
@@ -42,6 +43,7 @@ public class ManagerDto {
         this.description = description;
     }
 
+    @JsonIgnore
     public List<ClientDto> getClientDtoList() {
         return clientDtoList;
     }
