@@ -41,7 +41,7 @@ public class ManagerController {
     public ResponseEntity<List<ManagerDto>> findAllManagers(){
         List<ManagerDto> managerDtoList = managerServiceImpl.getManagers();
 //        return managerDtoList;
-        return new ResponseEntity<>(managerDtoList, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(managerDtoList, HttpStatus.OK);
     }
 
     @GetMapping(value = "/managers/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
