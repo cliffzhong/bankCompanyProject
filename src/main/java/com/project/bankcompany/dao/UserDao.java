@@ -1,4 +1,4 @@
-package com.project.bankcompany.dao.hibernate;
+package com.project.bankcompany.dao;
 
 
 
@@ -17,5 +17,5 @@ public interface UserDao {
     User addRole(User user, Role role);
     boolean delete(User user);
     List<User> findAllUsers();
-    User getUserByName(String username);
+    User getUserByUsername(String username);
 }

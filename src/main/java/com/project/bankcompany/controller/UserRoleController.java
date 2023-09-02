@@ -88,7 +88,7 @@ public class UserRoleController {
     private void displayUser(int i, UserDto userDto) {
         logger.info("======= User No.{} ========", i);
         logger.info("\t user.id={}", userDto.getId());
-        logger.info("\t user.name={}", userDto.getName());
+        logger.info("\t user.name={}", userDto.getUsername());
         logger.info("\t user.firstName={}", userDto.getFirstName());
         logger.info("\t user.lastName={}", userDto.getLastName());
         logger.info("\t user.email={}", userDto.getEmail());

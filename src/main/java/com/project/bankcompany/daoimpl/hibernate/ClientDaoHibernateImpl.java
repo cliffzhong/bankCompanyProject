@@ -1,7 +1,7 @@
 package com.project.bankcompany.daoimpl.hibernate;
 
 
-import com.project.bankcompany.dao.hibernate.ClientDao;
+import com.project.bankcompany.dao.ClientDao;
 import com.project.bankcompany.entity.Client;
 import com.project.bankcompany.entity.Manager;
 import com.project.bankcompany.util.HibernateUtil;

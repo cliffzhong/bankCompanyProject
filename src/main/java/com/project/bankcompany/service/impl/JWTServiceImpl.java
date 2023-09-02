@@ -48,7 +48,7 @@ public class JWTServiceImpl implements JWTService {
         //create and organize Claims
         Claims claims = Jwts.claims();
         claims.setId(String.valueOf(userDto.getId()));
-        claims.setSubject(userDto.getName());
+        claims.setSubject(userDto.getUsername());
         claims.setIssuedAt(new Date(System.currentTimeMillis()));
         claims.setIssuer(ISSUER);
         claims.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME));

@@ -1,4 +1,4 @@
-package com.project.bankcompany.dao.hibernate;
+package com.project.bankcompany.dao;
 
 
 

@@ -8,7 +8,7 @@
 package com.project.bankcompany.service.impl;
 
 
-import com.project.bankcompany.dao.hibernate.*;
+import com.project.bankcompany.dao.RoleDao;
 import com.project.bankcompany.dto.*;
 import com.project.bankcompany.entity.*;
 import com.project.bankcompany.service.*;

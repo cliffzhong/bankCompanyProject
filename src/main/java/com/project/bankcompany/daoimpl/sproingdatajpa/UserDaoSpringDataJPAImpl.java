@@ -2,7 +2,7 @@ package com.project.bankcompany.daoimpl.sproingdatajpa;
 
 
 
-import com.project.bankcompany.dao.hibernate.UserDao;
+import com.project.bankcompany.dao.UserDao;
 import com.project.bankcompany.daoimpl.repository.UserRepository;
 import com.project.bankcompany.entity.Role;
 import com.project.bankcompany.entity.User;
@@ -79,8 +79,8 @@ public class UserDaoSpringDataJPAImpl implements UserDao {
     }
 
     @Override
-    public User getUserByName(String username) {
-        User user = userRepository.findByName(username);
+    public User getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username);
         return user;
     }
 }

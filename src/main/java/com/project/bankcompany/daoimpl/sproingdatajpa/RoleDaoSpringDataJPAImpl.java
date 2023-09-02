@@ -1,7 +1,7 @@
 package com.project.bankcompany.daoimpl.sproingdatajpa;
 
 
-import com.project.bankcompany.dao.hibernate.RoleDao;
+import com.project.bankcompany.dao.RoleDao;
 import com.project.bankcompany.daoimpl.repository.RoleRepository;
 import com.project.bankcompany.entity.Role;
 import org.slf4j.Logger;

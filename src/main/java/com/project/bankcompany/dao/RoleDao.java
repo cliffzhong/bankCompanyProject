@@ -5,7 +5,7 @@
  *  Date: 06/2019
  */
 
-package com.project.bankcompany.dao.hibernate;
+package com.project.bankcompany.dao;
 
 
 

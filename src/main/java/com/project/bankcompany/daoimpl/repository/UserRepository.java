@@ -13,5 +13,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByEmailAndPassword(String email, String password) throws UserNotFoundException;
 
-    User findByName(String name);
+    User findByUsername(String name);
 }

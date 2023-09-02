@@ -8,7 +8,7 @@
 package com.project.bankcompany.service.impl;
 
 
-import com.project.bankcompany.dao.hibernate.UserDao;
+import com.project.bankcompany.dao.UserDao;
 import com.project.bankcompany.dto.RoleDto;
 import com.project.bankcompany.dto.UserDto;
 import com.project.bankcompany.entity.Role;
@@ -27,7 +27,7 @@ import java.util.Set;
 
 @Service("UserServiceImpl")
 public class UserServiceImpl implements UserService {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     @Autowired
     @Qualifier("userSpringDataJPADao")
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
     private void displayUserDto(int i, UserDto user) {
         logger.info("======= UserDto No.{} ========", i);
         logger.info("\t user.id={}", user.getId());
-        logger.info("\t user.name={}", user.getName());
+        logger.info("\t user.name={}", user.getUsername());
         logger.info("\t user.firstName={}", user.getFirstName());
         logger.info("\t user.lastName={}", user.getLastName());
         logger.info("\t user.email={}", user.getEmail());
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
     private void displayUser(int i, User user) {
         logger.info("======= User No.{} ========", i);
         logger.info("\t user.id={}", user.getId());
-        logger.info("\t user.name={}", user.getName());
+        logger.info("\t user.name={}", user.getUsername());
         logger.info("\t user.firstName={}", user.getFirstName());
         logger.info("\t user.lastName={}", user.getLastName());
         logger.info("\t user.email={}", user.getEmail());

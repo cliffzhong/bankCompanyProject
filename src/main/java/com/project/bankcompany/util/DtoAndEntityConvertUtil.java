@@ -1,11 +1,11 @@
 package com.project.bankcompany.util;
 
-import com.project.bankcompany.dto.RoleDto;
-import com.project.bankcompany.dto.UserDto;
-import com.project.bankcompany.entity.Role;
-import com.project.bankcompany.entity.User;
+import com.project.bankcompany.dto.*;
+import com.project.bankcompany.entity.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class DtoAndEntityConvertUtil {
@@ -13,7 +13,7 @@ public class DtoAndEntityConvertUtil {
     public static User convertUserDtoToUser(UserDto userDto) {
         User user = new User();
         user.setId(userDto.getId());
-        user.setName(userDto.getName());
+        user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
         user.setSecretKey(userDto.getSecretKey());
         user.setFirstName(userDto.getFirstName());
@@ -48,7 +48,7 @@ public class DtoAndEntityConvertUtil {
     public static UserDto convertUserToUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
-        userDto.setName(user.getName());
+        userDto.setUsername(user.getUsername());
         userDto.setPassword(user.getPassword());
         userDto.setSecretKey(user.getSecretKey());
         userDto.setFirstName(user.getFirstName());
@@ -136,7 +136,7 @@ public class DtoAndEntityConvertUtil {
     public static UserDto convertUserToUserDtoWithoutRole(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
-        userDto.setName(user.getName());
+        userDto.setUsername(user.getUsername());
         userDto.setPassword(user.getPassword());
         userDto.setSecretKey(user.getSecretKey());
         userDto.setFirstName(user.getFirstName());
@@ -146,4 +146,182 @@ public class DtoAndEntityConvertUtil {
         return userDto;
     }
 
+
+
+    public static Appointment convertAppointmentDtoToAppointment(AppointmentDto appointmentDto){
+        Appointment appointment = new Appointment();
+        appointment.setId(appointmentDto.getId());
+        appointment.setDescription(appointmentDto.getDescription());
+        appointment.setLocation(appointmentDto.getLocation());
+        appointment.setDate(appointmentDto.getDate());
+        appointment.setConfirmed(appointmentDto.getConfirmed());
+        appointment.setUser(appointmentDto.getUser());
+        return appointment;
+    }
+
+    public static AppointmentDto  convertAppointmentToAppointmentDto(Appointment appointment){
+        AppointmentDto appointmentDto = new AppointmentDto();
+        appointmentDto.setId(appointment.getId());
+        appointmentDto.setDescription(appointment.getDescription());
+        appointmentDto.setLocation(appointment.getLocation());
+        appointmentDto.setDate(appointment.getDate());
+        appointmentDto.setConfirmed(appointment.getConfirmed());
+        appointmentDto.setUser(appointment.getUser());
+        return appointmentDto;
+    }
+
+
+
+    public static CheckingAccount convertCheckingAccountDtoToCheckingAccount(CheckingAccountDto checkingAccountDto){
+        CheckingAccount checkingAccount = new CheckingAccount();
+        checkingAccount.setId(checkingAccountDto.getId());
+        checkingAccount.setAccountNumber(checkingAccountDto.getAccountNumber());
+        checkingAccount.setAccountBalance(checkingAccountDto.getAccountBalance());
+        checkingAccount.setCheckingTransactionList(getCheckingTransactionListByCheckingTransactionDtoList(checkingAccountDto.getCheckingTransactionDtoList()));
+        return checkingAccount;
+    }
+
+    private static List<CheckingTransaction> getCheckingTransactionListByCheckingTransactionDtoList(List<CheckingTransactionDto> checkingTransactionDtoList) {
+        List<CheckingTransaction> checkingTransactionList = new ArrayList<>();
+        for(CheckingTransactionDto checkingTransactionDto : checkingTransactionDtoList) {
+            CheckingTransaction checkingTransaction = convertCheckingTransactionDtoToCheckingTransaction(checkingTransactionDto);
+            checkingTransactionList.add(checkingTransaction);
+        }
+        return checkingTransactionList;
+    }
+
+    public static CheckingAccountDto convertCheckingAccountToCheckingAccountDto(CheckingAccount checkingAccount){
+        CheckingAccountDto checkingAccountDto = new CheckingAccountDto();
+        checkingAccountDto.setId(checkingAccount.getId());
+        checkingAccountDto.setAccountNumber(checkingAccount.getAccountNumber());
+        checkingAccountDto.setAccountBalance(checkingAccount.getAccountBalance());
+        checkingAccountDto.setCheckingTransactionDtoList(getCheckingTransactionDtoListByCheckingTransactionList(checkingAccount.getCheckingTransactionList()));
+        return checkingAccountDto;
+    }
+
+    private static List<CheckingTransactionDto> getCheckingTransactionDtoListByCheckingTransactionList(List<CheckingTransaction> checkingTransactionList) {
+        List<CheckingTransactionDto> checkingTransactionDtoList = new ArrayList<>();
+        for(CheckingTransaction checkingTransaction : checkingTransactionList) {
+            CheckingTransactionDto checkingTransactionDto = convertCheckingTransactionToCheckingTransactionDto(checkingTransaction);
+            checkingTransactionDtoList.add(checkingTransactionDto);
+        }
+        return checkingTransactionDtoList;
+    }
+
+    public static CheckingTransaction convertCheckingTransactionDtoToCheckingTransaction(CheckingTransactionDto checkingTransactionDto){
+        CheckingTransaction checkingTransaction = new CheckingTransaction();
+        checkingTransaction.setId(checkingTransactionDto.getId());
+        checkingTransaction.setDate(checkingTransactionDto.getDate());
+        checkingTransaction.setDescription(checkingTransactionDto.getDescription());
+        checkingTransaction.setType(checkingTransactionDto.getType());
+        checkingTransaction.setStatus(checkingTransactionDto.getStatus());
+        checkingTransaction.setAmount(checkingTransactionDto.getAmount());
+        checkingTransaction.setAvailableBalance(checkingTransactionDto.getAvailableBalance());
+        checkingTransaction.setCheckingAccount(checkingTransactionDto.getCheckingAccount());
+        return checkingTransaction;
+    }
+
+    public static CheckingTransactionDto convertCheckingTransactionToCheckingTransactionDto(CheckingTransaction checkingTransaction){
+        CheckingTransactionDto checkingTransactionDto = new CheckingTransactionDto();
+        checkingTransactionDto.setId(checkingTransaction.getId());
+        checkingTransactionDto.setDate(checkingTransaction.getDate());
+        checkingTransactionDto.setDescription(checkingTransaction.getDescription());
+        checkingTransactionDto.setType(checkingTransaction.getType());
+        checkingTransactionDto.setStatus(checkingTransaction.getStatus());
+        checkingTransactionDto.setAmount(checkingTransaction.getAmount());
+        checkingTransactionDto.setAvailableBalance(checkingTransaction.getAvailableBalance());
+        checkingTransactionDto.setCheckingAccount(checkingTransaction.getCheckingAccount());
+        return checkingTransactionDto;
+    }
+
+
+
+
+    public static SavingsAccount convertSavingsAccountDtoToSavingsAccount(SavingsAccountDto savingsAccountDto){
+        SavingsAccount savingsAccount = new SavingsAccount();
+        savingsAccount.setId(savingsAccountDto.getId());
+        savingsAccount.setAccountNumber(savingsAccountDto.getAccountNumber());
+        savingsAccount.setAccountBalance(savingsAccountDto.getAccountBalance());
+        savingsAccount.setSavingsTransactionList(getSavingsTransactionListBySavingsTransactionDtoList(savingsAccountDto.getSavingsTransactionDtoList()));
+        return savingsAccount;
+    }
+
+    private static List<SavingsTransaction> getSavingsTransactionListBySavingsTransactionDtoList(List<SavingsTransactionDto> savingsTransactionDtoList) {
+        List<SavingsTransaction> savingsTransactionList = new ArrayList<>();
+        for(SavingsTransactionDto savingsTransactionDto : savingsTransactionDtoList) {
+            SavingsTransaction savingsTransaction = convertSavingsTransactionDtoToSavingsTransaction(savingsTransactionDto);
+            savingsTransactionList.add(savingsTransaction);
+        }
+        return savingsTransactionList;
+    }
+
+    public static SavingsAccountDto convertSavingsAccountToSavingsAccountDto(SavingsAccount savingsAccount){
+        SavingsAccountDto savingsAccountDto = new SavingsAccountDto();
+        savingsAccountDto.setId(savingsAccount.getId());
+        savingsAccountDto.setAccountNumber(savingsAccount.getAccountNumber());
+        savingsAccountDto.setAccountBalance(savingsAccount.getAccountBalance());
+        savingsAccountDto.setSavingsTransactionDtoList(getSavingsTransactionDtoListBySavingsTransactionList(savingsAccount.getSavingsTransactionList()));
+        return savingsAccountDto;
+    }
+
+    private static List<SavingsTransactionDto> getSavingsTransactionDtoListBySavingsTransactionList(List<SavingsTransaction> savingsTransactionList) {
+        List<SavingsTransactionDto> savingsTransactionDtoList = new ArrayList<>();
+        for(SavingsTransaction savingsTransaction : savingsTransactionList) {
+            SavingsTransactionDto savingsTransactionDto = convertSavingsTransactionToSavingsTransactionDto(savingsTransaction);
+            savingsTransactionDtoList.add(savingsTransactionDto);
+        }
+        return savingsTransactionDtoList;
+    }
+
+    public static SavingsTransaction convertSavingsTransactionDtoToSavingsTransaction(SavingsTransactionDto savingsTransactionDto){
+        SavingsTransaction savingsTransaction = new SavingsTransaction();
+        savingsTransaction.setId(savingsTransactionDto.getId());
+        savingsTransaction.setDate(savingsTransactionDto.getDate());
+        savingsTransaction.setDescription(savingsTransactionDto.getDescription());
+        savingsTransaction.setType(savingsTransactionDto.getType());
+        savingsTransaction.setStatus(savingsTransactionDto.getStatus());
+        savingsTransaction.setAmount(savingsTransactionDto.getAmount());
+        savingsTransaction.setAvailableBalance(savingsTransactionDto.getAvailableBalance());
+        savingsTransaction.setSavingsAccount(savingsTransactionDto.getSavingsAccount());
+        return savingsTransaction;
+    }
+
+    public static SavingsTransactionDto convertSavingsTransactionToSavingsTransactionDto(SavingsTransaction savingsTransaction){
+        SavingsTransactionDto savingsTransactionDto = new SavingsTransactionDto();
+        savingsTransactionDto.setId(savingsTransaction.getId());
+        savingsTransactionDto.setDate(savingsTransaction.getDate());
+        savingsTransactionDto.setDescription(savingsTransaction.getDescription());
+        savingsTransactionDto.setType(savingsTransaction.getType());
+        savingsTransactionDto.setStatus(savingsTransaction.getStatus());
+        savingsTransactionDto.setAmount(savingsTransaction.getAmount());
+        savingsTransactionDto.setAvailableBalance(savingsTransaction.getAvailableBalance());
+        savingsTransactionDto.setSavingsAccount(savingsTransaction.getSavingsAccount());
+        return savingsTransactionDto;
+    }
+
+
+
+    public static Recipient convertRecipientDtoToRecipient(RecipientDto recipientDto){
+        Recipient recipient = new Recipient();
+        recipient.setId(recipientDto.getId());
+        recipient.setName(recipientDto.getName());
+        recipient.setEmail(recipientDto.getEmail());
+        recipient.setPhone(recipientDto.getPhone());
+        recipient.setAccountNumber(recipientDto.getAccountNumber());
+        recipient.setDescription(recipientDto.getDescription());
+        recipient.setUser(recipientDto.getUser());
+        return recipient;
+    }
+
+    public static RecipientDto convertRecipientToRecipientDto(Recipient recipient){
+        RecipientDto recipientDto = new RecipientDto();
+        recipientDto.setId(recipient.getId());
+        recipientDto.setName(recipient.getName());
+        recipientDto.setEmail(recipient.getEmail());
+        recipientDto.setPhone(recipient.getPhone());
+        recipientDto.setAccountNumber(recipient.getAccountNumber());
+        recipientDto.setDescription(recipient.getDescription());
+        recipientDto.setUser(recipient.getUser());
+        return recipientDto;
+    }
 }

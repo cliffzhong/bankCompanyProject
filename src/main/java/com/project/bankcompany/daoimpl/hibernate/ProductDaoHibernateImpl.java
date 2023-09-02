@@ -1,7 +1,7 @@
 package com.project.bankcompany.daoimpl.hibernate;
 
 
-import com.project.bankcompany.dao.hibernate.ProductDao;
+import com.project.bankcompany.dao.ProductDao;
 import com.project.bankcompany.entity.Product;
 import com.project.bankcompany.util.HibernateUtil;
 import org.hibernate.Session;
@@ -13,9 +13,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
-import java.time.LocalDate;
+
 import java.util.ArrayList;
-import java.util.List;
 
 @Repository("ProductDaoHibernateImpl")
 public class ProductDaoHibernateImpl implements ProductDao {

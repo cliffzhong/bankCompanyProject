@@ -1,6 +1,8 @@
 package com.project.bankcompany.service.impl;
 
-import com.project.bankcompany.dao.hibernate.*;
+import com.project.bankcompany.dao.ClientDao;
+import com.project.bankcompany.dao.ManagerDao;
+import com.project.bankcompany.dao.ProductDao;
 import com.project.bankcompany.dto.*;
 import com.project.bankcompany.entity.*;
 import com.project.bankcompany.service.*;

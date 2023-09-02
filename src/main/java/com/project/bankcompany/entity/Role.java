@@ -158,7 +158,7 @@ public class Role {
     public static UserDto convertUserToUserDtoWithoutRole(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
-        userDto.setName(user.getName());
+        userDto.setUsername(user.getUsername());
         userDto.setPassword(user.getPassword());
         userDto.setSecretKey(user.getSecretKey());
         userDto.setFirstName(user.getFirstName());

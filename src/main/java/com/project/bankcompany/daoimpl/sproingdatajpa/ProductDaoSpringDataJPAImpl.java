@@ -1,6 +1,6 @@
 package com.project.bankcompany.daoimpl.sproingdatajpa;
 
-import com.project.bankcompany.dao.hibernate.ProductDao;
+import com.project.bankcompany.dao.ProductDao;
 import com.project.bankcompany.daoimpl.repository.ProductRepository;
 import com.project.bankcompany.entity.Product;
 import org.slf4j.Logger;

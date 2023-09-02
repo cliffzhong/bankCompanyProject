@@ -9,6 +9,7 @@ package com.project.bankcompany.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.bankcompany.dto.RoleDto;
 import com.project.bankcompany.dto.UserDto;
@@ -16,6 +17,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,30 +25,24 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
     public User() { }
-    public User(String name, String password, String secretKey, String firstName, String lastName, String email) {
-        this.name = name;
-        this.password = password;
-        this.secretKey = secretKey;
+    public User(String firstName, String lastName, String email, String username,
+                String password, String secretKey, String phone, byte enabled) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.username = username;
+        this.password = password;
+        this.secretKey = secretKey;
+        this.phone = phone;
+        this.enabled = enabled;
     }
+
 
     @Id
     //@SequenceGenerator(name = "user_id_generator", sequenceName = "user_id_seq", allocationSize = 1)
     //@GeneratedValue(strategy = SEQUENCE, generator = "user_id_generator")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "password")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
-
-    @Column(name = "secret_key")
-    private String secretKey;
 
     @Column(name = "first_name")
     private String firstName;
@@ -56,6 +52,34 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "secret_key")
+    private String secretKey;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "enabled")
+    private byte enabled;
+
+    @OneToOne
+    private CheckingAccount checkingAccount;
+
+    @OneToOne
+    private SavingsAccount savingsAccount;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Appointment> appointmentList;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Recipient> recipientList;
 
     //@ManyToMany(mappedBy = "users", cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
 //    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
@@ -73,33 +97,6 @@ public class User {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-    //User u = new User()
-    //String digestPassword=DigestUtils.md5Hex(password.trim());
-    //u.setPassword(digestPassword)
-    //session.save(u)
-    public void setPassword(String password) {
-        this.password = DigestUtils.md5Hex(password.trim());
-    }
-
-    public String getSecretKey() {
-        return secretKey;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
     }
 
     public String getFirstName() {
@@ -123,7 +120,79 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email.toLowerCase().trim();
+        this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public byte getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(byte enabled) {
+        this.enabled = enabled;
+    }
+
+    public CheckingAccount getCheckingAccount() {
+        return checkingAccount;
+    }
+
+    public void setCheckingAccount(CheckingAccount checkingAccount) {
+        this.checkingAccount = checkingAccount;
+    }
+
+    public SavingsAccount getSavingsAccount() {
+        return savingsAccount;
+    }
+
+    public void setSavingsAccount(SavingsAccount savingsAccount) {
+        this.savingsAccount = savingsAccount;
+    }
+
+    public List<Appointment> getAppointmentList() {
+        return appointmentList;
+    }
+
+    public void setAppointmentList(List<Appointment> appointmentList) {
+        this.appointmentList = appointmentList;
+    }
+
+    public List<Recipient> getRecipientList() {
+        return recipientList;
+    }
+
+    public void setRecipientList(List<Recipient> recipientList) {
+        this.recipientList = recipientList;
     }
 
     public Set<Role> getRoles() {
@@ -149,7 +218,7 @@ public class User {
     public UserDto convertUserToUserDto() {
         UserDto userDto = new UserDto();
         userDto.setId(getId());
-        userDto.setName(getName());
+        userDto.setUsername(getUsername());
         userDto.setPassword(getPassword());
         userDto.setSecretKey(getSecretKey());
         userDto.setFirstName(getFirstName());
@@ -189,7 +258,7 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return id == user.id &&
-                name.equals(user.name) &&
+                username.equals(user.username) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 email.equals(user.email);
@@ -197,7 +266,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, password, secretKey, firstName, lastName, email);
+        return Objects.hash(id,firstName,lastName,email,username,password,secretKey,phone,enabled);
     }
 
 //    @Override
@@ -215,16 +284,19 @@ public class User {
 //        return str;
 //    }
 
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", secretKey='" + secretKey + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", secretKey='" + secretKey + '\'' +
+                ", phone='" + phone + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }
