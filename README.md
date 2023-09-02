@@ -24,7 +24,7 @@ The Admin-Portal is primarily designed for administrators and includes the follo
 
 ### System Detail Diagram
 
-![Screenshot](screenshot/system_detail_diagram.png)
+![Screenshot](screenshot/system_detail_diagram.jpg)
 
 ## Technologies Used
 
