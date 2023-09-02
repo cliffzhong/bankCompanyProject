@@ -21,7 +21,7 @@ public class Manager {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "manager")
+    @OneToMany(mappedBy = "manager", cascade = CascadeType.REMOVE)
     private List<Client> clientList;
 
     public long getId() {

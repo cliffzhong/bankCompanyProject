@@ -33,7 +33,7 @@ public class Client {
     @Column(name = "enrolled_date")
     private LocalDate enrolledDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
     private Manager manager;
 

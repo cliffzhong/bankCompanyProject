@@ -1,7 +1,7 @@
 package com.project.bankcompany.daoimpl.sproingdatajpa;
 
 
-import com.project.bankcompany.dao.hibernate.ManagerDao;
+import com.project.bankcompany.dao.ManagerDao;
 import com.project.bankcompany.daoimpl.repository.ManagerRepository;
 import com.project.bankcompany.entity.Manager;
 import org.slf4j.Logger;

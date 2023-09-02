@@ -84,7 +84,7 @@ public class ClientDto {
         this.enrolledDate = enrolledDate;
     }
 
-    public Manager getManagers() {
+    public Manager getManager() {
         return managers;
     }
 
@@ -110,7 +110,7 @@ public class ClientDto {
         client.setLastName(getLastName());
         client.setEmail(getEmail());
         client.setEnrolledDate(getEnrolledDate());
-        client.setManager(getManagers());
+        client.setManager(getManager());
         return client;
     }
 
