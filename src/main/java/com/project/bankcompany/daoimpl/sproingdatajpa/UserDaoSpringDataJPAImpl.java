@@ -83,4 +83,16 @@ public class UserDaoSpringDataJPAImpl implements UserDao {
         User user = userRepository.findByUsername(username);
         return user;
     }
+
+    @Override
+    public User findByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        return user;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        return user;
+    }
 }

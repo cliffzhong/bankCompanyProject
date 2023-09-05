@@ -21,7 +21,7 @@ public interface TransactionService {
 
     SavingsTransactionDto saveSavingsWithdrawTransaction(SavingsTransactionDto savingsTransactionDto);
 
-    boolean betweenAccountsTransfer(String transferFrom, String transferTo, String amount, CheckingAccountDto checkingAccountDto, SavingsAccountDto savingsAccountDto) throws Exception;
+    void betweenAccountsTransfer(String transferFrom, String transferTo, String amount, CheckingAccountDto checkingAccountDto, SavingsAccountDto savingsAccountDto) throws Exception;
 
     List<RecipientDto> getAllRecipients(String username);
 

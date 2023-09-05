@@ -15,8 +15,12 @@ public interface RecipientDao {
 
     boolean deleteById(Long id);
 
+    boolean deleteByName(String name);
+
     List<Recipient> findAllRecipients();
 
     Recipient findById(Long id);
+
+    Recipient findByName(String name);
 
 }
