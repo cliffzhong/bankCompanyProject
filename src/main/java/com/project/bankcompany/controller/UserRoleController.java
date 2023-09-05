@@ -17,7 +17,7 @@ import java.util.Set;
 
 @RestController
 public class UserRoleController {
-    private Logger logger= LoggerFactory.getLogger(getClass());
+    private Logger logger= LoggerFactory.getLogger(getClass().getName());
 
     @Autowired
     private RoleService roleService;
@@ -76,6 +76,17 @@ public class UserRoleController {
     @GetMapping(value="/roles", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RoleDto> finsAllRoles() {
         return roleService.getAllRoles();
+    }
+
+
+
+    @GetMapping(value = "/users/profile", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String profile(@PathVariable("email") String email) {
+        UserDto userDto = userService.getUserByEmail(email);
+
+        displayUser(1, userDto);
+
+        return "profile";
     }
 
     private void displayUsers(List<UserDto> userDtoList) {

@@ -60,6 +60,20 @@ public class RecipientDaoSpringDataJPAImpl implements RecipientDao {
     }
 
     @Override
+    public boolean deleteByName(String name) {
+        boolean successFlag = false;
+        try{
+            recipientRepository.deleteByName(name);
+            successFlag = true;
+        }catch(IllegalArgumentException iae){
+            logger.error("caught IllegalArgumentException when trying deleteById with RecipientName={}, error={}",name, iae.getMessage());
+        }catch(OptimisticLockingFailureException olfe){
+            logger.error("caught OptimisticLockingFailureException when trying deleteById with RecipientName={}, error={}",name, olfe.getMessage());
+        }
+        return successFlag;
+    }
+
+    @Override
     public List<Recipient> findAllRecipients() {
         List<Recipient> recipientList = recipientRepository.findAll();
         return recipientList;
@@ -69,6 +83,15 @@ public class RecipientDaoSpringDataJPAImpl implements RecipientDao {
     public Recipient findById(Long id) {
         Recipient recipient = null;
         Optional<Recipient> recipientOptional = recipientRepository.findById(id);
+        if(recipientOptional.isPresent())
+            recipient = recipientOptional.get();
+        return recipient;
+    }
+
+    @Override
+    public Recipient findByName(String name) {
+        Recipient recipient = null;
+        Optional<Recipient> recipientOptional = Optional.of(recipientRepository.findByName(name));
         if(recipientOptional.isPresent())
             recipient = recipientOptional.get();
         return recipient;

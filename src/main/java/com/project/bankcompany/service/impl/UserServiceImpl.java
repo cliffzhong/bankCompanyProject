@@ -66,6 +66,42 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
+    public UserDto findByUsername(String username) {
+        User user = userDao.findByUsername(username);
+        UserDto userDto = user.convertUserToUserDto();
+        return userDto;
+    }
+
+    public UserDto findByEmail(String email) {
+        User user = userDao.findByEmail(email);
+        UserDto userDto = user.convertUserToUserDto();
+        return userDto;
+    }
+
+    public boolean checkUserExists(String username, String email){
+        if (checkUsernameExists(username) || checkEmailExists(username)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkUsernameExists(String username) {
+        if (null != findByUsername(username)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean checkEmailExists(String email) {
+        if (null != findByEmail(email)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public List<UserDto> getAllUsers() {
         List<User> userList = userDao.findAllUsers();
         List<UserDto> userDtoList = getUserDtoListByUserList(userList);

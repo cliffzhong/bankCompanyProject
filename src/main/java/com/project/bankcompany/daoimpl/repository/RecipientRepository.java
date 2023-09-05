@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RecipientRepository extends JpaRepository<Recipient, Long> {
+
+    Recipient findByName(String name);
+
+    boolean deleteByName(String name);
 }

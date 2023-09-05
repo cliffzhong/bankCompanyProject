@@ -17,6 +17,16 @@ public interface UserService {
 
     UserDto getUserByCredentials(String email, String password);
 
+    boolean checkUserExists(String username, String email);
+
+    boolean checkUsernameExists(String username);
+
+    boolean checkEmailExists(String email);
+
+    UserDto findByUsername(String username);
+
+    UserDto findByEmail(String email);
+
     List<UserDto> getAllUsers();
 
 
