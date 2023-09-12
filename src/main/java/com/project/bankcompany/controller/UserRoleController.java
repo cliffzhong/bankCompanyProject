@@ -80,13 +80,13 @@ public class UserRoleController {
 
 
 
-    @GetMapping(value = "/users/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String profile(@PathVariable("email") String email) {
+    @GetMapping(value = "/users/profile/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDto profile(@PathVariable("email") String email) {
         UserDto userDto = userService.getUserByEmail(email);
 
         displayUser(1, userDto);
 
-        return "profile";
+        return userDto;
     }
 
     private void displayUsers(List<UserDto> userDtoList) {

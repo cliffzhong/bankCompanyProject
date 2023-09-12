@@ -24,6 +24,8 @@ public class CheckingAccountDto {
 
     public CheckingAccount convertCheckingAccountDtoToCheckingAccount() {
         CheckingAccount checkingAccount = new CheckingAccount();
+        if(getId() != null)
+            checkingAccount.setId(getId());
         checkingAccount.setId(getId());
         checkingAccount.setAccountNumber(getAccountNumber());
         checkingAccount.setAccountBalance(getAccountBalance());

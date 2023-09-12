@@ -65,7 +65,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         logger.info("\t appointment.location={}", appointment.getLocation());
         logger.info("\t appointment.description={}", appointment.getDescription());
         logger.info("\t appointment.confirmed={}", appointment.getConfirmed());
-        logger.info("\t appointment.userid={}", appointment.getUser());
+        logger.info("\t appointment.userid={}", appointment.getUserDto());
     }
 
     @Override
