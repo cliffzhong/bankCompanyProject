@@ -28,7 +28,7 @@ public class UserDto {
 
     private String phone;
 
-    private byte enabled;
+    private boolean enabled;
 
     private CheckingAccountDto checkingAccountDto;
 
@@ -107,11 +107,11 @@ public class UserDto {
         this.phone = phone;
     }
 
-    public byte getEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(byte enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -223,7 +223,7 @@ public class UserDto {
         appointment.setDescription(appointmentDto.getDescription());
         appointment.setConfirmed(appointmentDto.getConfirmed());
         appointment.setLocation(appointmentDto.getLocation());
-        appointment.setUser(appointmentDto.getUser());
+        appointment.setUser(appointmentDto.getUserDto().convertUserDtoToUser());
 
         return appointment;
     }

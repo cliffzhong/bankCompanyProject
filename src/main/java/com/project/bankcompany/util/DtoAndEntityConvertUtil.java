@@ -19,8 +19,31 @@ public class DtoAndEntityConvertUtil {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
+        user.setCheckingAccount(convertCheckingAccountDtoToCheckingAccount(userDto.getCheckingAccountDto()));
+        user.setSavingsAccount(convertSavingsAccountDtoToSavingsAccount(userDto.getSavingsAccountDto()));
+        user.setEnabled(userDto.getEnabled());
+        user.setAppointmentList(getAppointmentListByAppointmentDtoList(userDto.getAppointmentDtoList()));
+        user.setRecipientList(getRecipientListByRecipientDtoList(userDto.getRecipientDtoList()));
         user.setRoles(getRolesByRoleDtoSet(userDto.getRoleDtoSet()));
         return user;
+    }
+
+    private static List<Recipient> getRecipientListByRecipientDtoList(List<RecipientDto> recipientDtoList) {
+        List<Recipient> recipientList = new ArrayList<>();
+        for(RecipientDto recipientDto : recipientDtoList) {
+            Recipient recipient = convertRecipientDtoToRecipientWithoutUser(recipientDto);
+            recipientList.add(recipient);
+        }
+        return recipientList;
+    }
+
+    private static List<Appointment> getAppointmentListByAppointmentDtoList(List<AppointmentDto> appointmentDtoList) {
+        List<Appointment> appointmentList = new ArrayList<>();
+        for(AppointmentDto appointmentDto : appointmentDtoList) {
+            Appointment appointment = convertAppointmentDtoToAppointmentWithoutUser(appointmentDto);
+            appointmentList.add(appointment);
+        }
+        return appointmentList;
     }
 
     private static Set<Role> getRolesByRoleDtoSet(Set<RoleDto> roleDtoSet) {
@@ -54,6 +77,9 @@ public class DtoAndEntityConvertUtil {
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
+        userDto.setCheckingAccountDto(convertCheckingAccountToCheckingAccountDto(user.getCheckingAccount()));
+        userDto.setSavingsAccountDto(convertSavingsAccountToSavingsAccountDto(user.getSavingsAccount()));
+        userDto.setEnabled(user.getEnabled());
         userDto.setRoleDtoSet(getRoleDtoSetByRolesWithoutUserDto(user.getRoles()));
         return userDto;
     }
@@ -142,6 +168,9 @@ public class DtoAndEntityConvertUtil {
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
+        userDto.setCheckingAccountDto(convertCheckingAccountToCheckingAccountDto(user.getCheckingAccount()));
+        userDto.setSavingsAccountDto(convertSavingsAccountToSavingsAccountDto(user.getSavingsAccount()));
+        userDto.setEnabled(user.getEnabled());
 //        userDto.setRoleDtoSet(getRoleDtoSetByRolesWithoutUserDto(user.getRoles()));
         return userDto;
     }
@@ -155,7 +184,18 @@ public class DtoAndEntityConvertUtil {
         appointment.setLocation(appointmentDto.getLocation());
         appointment.setDate(appointmentDto.getDate());
         appointment.setConfirmed(appointmentDto.getConfirmed());
-        appointment.setUser(appointmentDto.getUser());
+        appointment.setUser(appointmentDto.getUserDto().convertUserDtoToUser());
+        return appointment;
+    }
+
+    public static Appointment convertAppointmentDtoToAppointmentWithoutUser(AppointmentDto appointmentDto){
+        Appointment appointment = new Appointment();
+        appointment.setId(appointmentDto.getId());
+        appointment.setDescription(appointmentDto.getDescription());
+        appointment.setLocation(appointmentDto.getLocation());
+        appointment.setDate(appointmentDto.getDate());
+        appointment.setConfirmed(appointmentDto.getConfirmed());
+//        appointment.setUser(appointmentDto.getUserDto().convertUserDtoToUser());
         return appointment;
     }
 
@@ -166,7 +206,18 @@ public class DtoAndEntityConvertUtil {
         appointmentDto.setLocation(appointment.getLocation());
         appointmentDto.setDate(appointment.getDate());
         appointmentDto.setConfirmed(appointment.getConfirmed());
-        appointmentDto.setUser(appointment.getUser());
+        appointmentDto.setUserDto(appointment.getUser().convertUserToUserDto());
+        return appointmentDto;
+    }
+
+    public static AppointmentDto  convertAppointmentToAppointmentDtoWithoutUser(Appointment appointment){
+        AppointmentDto appointmentDto = new AppointmentDto();
+        appointmentDto.setId(appointment.getId());
+        appointmentDto.setDescription(appointment.getDescription());
+        appointmentDto.setLocation(appointment.getLocation());
+        appointmentDto.setDate(appointment.getDate());
+        appointmentDto.setConfirmed(appointment.getConfirmed());
+//        appointmentDto.setUserDto(appointment.getUser().convertUserToUserDto());
         return appointmentDto;
     }
 
@@ -313,6 +364,18 @@ public class DtoAndEntityConvertUtil {
         return recipient;
     }
 
+    public static Recipient convertRecipientDtoToRecipientWithoutUser(RecipientDto recipientDto){
+        Recipient recipient = new Recipient();
+        recipient.setId(recipientDto.getId());
+        recipient.setName(recipientDto.getName());
+        recipient.setEmail(recipientDto.getEmail());
+        recipient.setPhone(recipientDto.getPhone());
+        recipient.setAccountNumber(recipientDto.getAccountNumber());
+        recipient.setDescription(recipientDto.getDescription());
+//        recipient.setUser(recipientDto.getUser());
+        return recipient;
+    }
+
     public static RecipientDto convertRecipientToRecipientDto(Recipient recipient){
         RecipientDto recipientDto = new RecipientDto();
         recipientDto.setId(recipient.getId());
@@ -322,6 +385,18 @@ public class DtoAndEntityConvertUtil {
         recipientDto.setAccountNumber(recipient.getAccountNumber());
         recipientDto.setDescription(recipient.getDescription());
         recipientDto.setUser(recipient.getUser());
+        return recipientDto;
+    }
+
+    public static RecipientDto convertRecipientToRecipientDtoWithoutUser(Recipient recipient){
+        RecipientDto recipientDto = new RecipientDto();
+        recipientDto.setId(recipient.getId());
+        recipientDto.setName(recipient.getName());
+        recipientDto.setEmail(recipient.getEmail());
+        recipientDto.setPhone(recipient.getPhone());
+        recipientDto.setAccountNumber(recipient.getAccountNumber());
+        recipientDto.setDescription(recipient.getDescription());
+//        recipientDto.setUser(recipient.getUser());
         return recipientDto;
     }
 }

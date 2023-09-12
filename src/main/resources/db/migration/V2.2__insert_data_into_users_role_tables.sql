@@ -47,6 +47,9 @@ VALUES
     ('Sophia', 'Martinez', 'sophia@example.com', 'sophiam', 'password9', 'secret_key9', '5555555555', B'1', 9, 9),
     ('Daniel', 'Miller', 'daniel@example.com', 'danielm', 'password10', 'secret_key10', '6666666666', B'1', 10, 10);
 commit;
+ALTER TABLE users
+ALTER COLUMN enabled TYPE BOOLEAN USING CASE WHEN enabled = B'1' THEN TRUE ELSE FALSE END;
+
 
 
 insert into users_roles values
@@ -78,3 +81,6 @@ VALUES
     (B'1', '2023-08-22 12:15:00', 'Marketing presentation', 'Marketing Dept', 4), -- Regular user
     (B'1', '2023-08-23 14:30:00', 'Strategy meeting', 'Boardroom', 5); -- Regular user
 commit;
+ALTER TABLE appointment
+ALTER COLUMN confirmed TYPE BOOLEAN USING CASE WHEN confirmed = B'1' THEN TRUE ELSE FALSE END;
+

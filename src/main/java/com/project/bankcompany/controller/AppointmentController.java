@@ -2,16 +2,16 @@ package com.project.bankcompany.controller;
 
 import com.project.bankcompany.dto.AppointmentDto;
 import com.project.bankcompany.dto.UserDto;
+import com.project.bankcompany.entity.User;
 import com.project.bankcompany.service.AppointmentService;
 import com.project.bankcompany.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @RequestMapping("/appointment")
 public class AppointmentController {
 
-    private Logger logger= LoggerFactory.getLogger(getClass().getName());
+    private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     @Autowired
     private AppointmentService appointmentService;
@@ -27,14 +27,23 @@ public class AppointmentController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AppointmentDto createAppointment(@RequestBody AppointmentDto appointmentDto, UserDto userDto) {
-        appointmentDto.setConfirmed(false);
-        appointmentDto.setUser(userDto.convertUserDtoToUser());
-        AppointmentDto savedAppointmentDto = appointmentService.createAppointment(appointmentDto);
-        return savedAppointmentDto;
+    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AppointmentDto> createAppointment(@RequestBody AppointmentDto appointmentDto, @RequestParam("username") String username) {
+        try {
+            UserDto userDto = userService.findByUsername(username);
+//            // Set the user in the appointment DTO
+            appointmentDto.setUserDto(userDto);
+
+            // Create the appointment
+            AppointmentDto savedAppointmentDto = appointmentService.createAppointment(appointmentDto);
+
+            // Return a successful response with the saved DTO
+            return ResponseEntity.ok(savedAppointmentDto);
+        } catch (Exception e) {
+            // Handle exceptions and return an appropriate error response
+            logger.error("Error creating appointment: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-
-
-
 }
+

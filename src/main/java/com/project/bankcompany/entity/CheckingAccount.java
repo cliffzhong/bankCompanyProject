@@ -17,7 +17,7 @@ public class CheckingAccount {
 
     private BigDecimal accountBalance;
 
-    @OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "checkingAccount", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<CheckingTransaction> checkingTransactionList;
 

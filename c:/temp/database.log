@@ -16,3 +16,20 @@
   Detail: Key (name)=(test1) already exists.
 2023-08-09T14:55:07.772-0400 ERROR ERROR: duplicate key value violates unique constraint "manager_name_key"
   Detail: Key (name)=(test1) already exists.
+2023-09-11T20:54:26.111-0400 ERROR ERROR: column "confirmed" is of type bit but expression is of type boolean
+  Hint: You will need to rewrite or cast the expression.
+  Position: 83
+2023-09-11T20:55:10.356-0400 ERROR ERROR: column "confirmed" is of type bit but expression is of type boolean
+  Hint: You will need to rewrite or cast the expression.
+  Position: 83
+2023-09-11T20:58:14.731-0400 ERROR ERROR: column "confirmed" is of type bit but expression is of type boolean
+  Hint: You will need to rewrite or cast the expression.
+  Position: 83
+2023-09-11T21:05:12.781-0400 ERROR Bad value for type byte : t
+2023-09-11T21:05:19.416-0400 ERROR Bad value for type byte : t
+2023-09-11T21:05:55.497-0400 ERROR Bad value for type byte : t
+2023-09-11T21:06:29.639-0400 ERROR Bad value for type byte : t
+2023-09-11T21:09:52.273-0400 ERROR Bad value for type byte : t
+2023-09-11T21:14:48.238-0400 ERROR Bad value for type byte : t
+2023-09-12T10:02:30.811-0400 ERROR Bad value for type byte : t
+2023-09-12T10:02:36.051-0400 ERROR Bad value for type byte : t

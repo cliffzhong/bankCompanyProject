@@ -20,7 +20,7 @@ public class AppointmentDto {
 
     private boolean confirmed;
 
-    private User user;
+    private UserDto userDto;
 
     private Appointment convertAppointmentDtoToAppointment(AppointmentDto appointmentDto){
         Appointment appointment = new Appointment() ;
@@ -29,7 +29,7 @@ public class AppointmentDto {
         appointment.setLocation(getLocation());
         appointment.setDescription(getDescription());
         appointment.setConfirmed(getConfirmed());
-        appointment.setUser(getUser());
+        appointment.setUser(getUserDto().convertUserDtoToUser());
         return appointment;
     }
 
@@ -73,11 +73,11 @@ public class AppointmentDto {
         this.confirmed = confirmed;
     }
 
-    public User getUser() {
-        return user;
+    public UserDto getUserDto() {
+        return userDto;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 }

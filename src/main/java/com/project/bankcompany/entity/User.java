@@ -26,7 +26,7 @@ import java.util.Set;
 public class User {
     public User() { }
     public User(String firstName, String lastName, String email, String username,
-                String password, String secretKey, String phone, byte enabled) {
+                String password, String secretKey, String phone, boolean enabled) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -66,7 +66,7 @@ public class User {
     private String phone;
 
     @Column(name = "enabled")
-    private byte enabled;
+    private boolean enabled;
 
     @OneToOne
     private CheckingAccount checkingAccount;
@@ -155,11 +155,11 @@ public class User {
         this.phone = phone;
     }
 
-    public byte getEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(byte enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 

@@ -68,13 +68,13 @@ public class UserServiceImpl implements UserService {
 
     public UserDto findByUsername(String username) {
         User user = userDao.findByUsername(username);
-        UserDto userDto = user.convertUserToUserDto();
+        UserDto userDto = DtoAndEntityConvertUtil.convertUserToUserDto(user);
         return userDto;
     }
 
     public UserDto findByEmail(String email) {
         User user = userDao.findByEmail(email);
-        UserDto userDto = user.convertUserToUserDto();
+        UserDto userDto = DtoAndEntityConvertUtil.convertUserToUserDto(user);
         return userDto;
     }
 
@@ -112,8 +112,8 @@ public class UserServiceImpl implements UserService {
     private List<UserDto> getUserDtoListByUserList(List<User> userList) {
         List<UserDto> userDtoList = new ArrayList<>();
         for(User user : userList) {
-//            UserDto userDto = DtoAndEntityConvertUtil.convertUserToUserDto(user);
-            UserDto userDto = user.convertUserToUserDto();
+            UserDto userDto = DtoAndEntityConvertUtil.convertUserToUserDto(user);
+//            UserDto userDto = user.convertUserToUserDto();
             userDtoList.add(userDto);
         }
         return userDtoList;
