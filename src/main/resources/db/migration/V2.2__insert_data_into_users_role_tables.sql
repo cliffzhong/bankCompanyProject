@@ -5,7 +5,6 @@ insert into roles (name, allowed_resource, allowed_read, allowed_create, allowed
 ;
 commit;
 
-
 INSERT INTO checking_account (account_balance, account_number)
 VALUES
     (1500.00, 100001),
@@ -50,7 +49,19 @@ commit;
 ALTER TABLE users
 ALTER COLUMN enabled TYPE BOOLEAN USING CASE WHEN enabled = B'1' THEN TRUE ELSE FALSE END;
 
-
+INSERT INTO recipient (account_number, description, email, name, phone, user_id)
+VALUES
+    ('100001', 'Recipient 1 Description', 'recipient1@example.com', 'Recipient1', '123-456-7890', '1'),
+    ('100002', 'Recipient 2 Description', 'recipient2@example.com', 'Recipient2', '234-567-8901', '2'),
+    ('100003', 'Recipient 3 Description', 'recipient3@example.com', 'Recipient3', '345-678-9012', '3'),
+    ('100004', 'Recipient 4 Description', 'recipient4@example.com', 'Recipient4', '456-789-0123', '4'),
+    ('100005', 'Recipient 5 Description', 'recipient5@example.com', 'Recipient5', '567-890-1234', '5'),
+    ('100006', 'Recipient 6 Description', 'recipient6@example.com', 'Recipient6', '678-901-2345', '6'),
+    ('100007', 'Recipient 7 Description', 'recipient7@example.com', 'Recipient7', '789-012-3456', '7'),
+    ('100008', 'Recipient 8 Description', 'recipient8@example.com', 'Recipient8', '890-123-4567', '8'),
+    ('100009', 'Recipient 9 Description', 'recipient9@example.com', 'Recipient9', '901-234-5678', '9'),
+    ('100010', 'Recipient 10 Description', 'recipient10@example.com', 'Recipient10', '012-345-6789', '10');
+commit;
 
 insert into users_roles values
 (1, 1),

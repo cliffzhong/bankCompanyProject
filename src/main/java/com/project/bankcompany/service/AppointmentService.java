@@ -5,7 +5,7 @@ import com.project.bankcompany.dto.AppointmentDto;
 import java.util.List;
 
 public interface AppointmentService {
-    AppointmentDto createAppointment(AppointmentDto appointmentDto);
+    AppointmentDto createAppointment(AppointmentDto appointmentDto, String username);
 
     List<AppointmentDto> findAll();
 

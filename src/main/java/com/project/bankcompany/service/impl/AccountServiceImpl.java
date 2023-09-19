@@ -60,7 +60,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deposit(String accountType, float amount, String username) {
         User user = userDao.getUserByUsername(username);
-        UserDto userDto = user.convertUserToUserDto();
+        UserDto userDto = DtoAndEntityConvertUtil.convertUserToUserDto(user);
 
         if (accountType.equalsIgnoreCase("Checking")) {
             CheckingAccountDto checkingAccountDto = userDto.getCheckingAccountDto();

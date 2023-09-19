@@ -4,6 +4,7 @@ package com.project.bankcompany.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.bankcompany.entity.*;
+import com.project.bankcompany.util.DtoAndEntityConvertUtil;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -236,7 +237,7 @@ public class UserDto {
         recipient.setName(recipientDto.getName());
         recipient.setEmail(recipientDto.getEmail());
         recipient.setPhone(recipientDto.getPhone());
-        recipient.setUser(recipientDto.getUser());
+        recipient.setUser(DtoAndEntityConvertUtil.convertUserDtoToUser(recipientDto.getUserDto()));
         return recipient;
     }
 

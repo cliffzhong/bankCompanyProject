@@ -184,7 +184,7 @@ public class DtoAndEntityConvertUtil {
         appointment.setLocation(appointmentDto.getLocation());
         appointment.setDate(appointmentDto.getDate());
         appointment.setConfirmed(appointmentDto.getConfirmed());
-        appointment.setUser(appointmentDto.getUserDto().convertUserDtoToUser());
+        appointment.setUser(convertUserDtoToUser(appointmentDto.getUserDto()));
         return appointment;
     }
 
@@ -206,7 +206,7 @@ public class DtoAndEntityConvertUtil {
         appointmentDto.setLocation(appointment.getLocation());
         appointmentDto.setDate(appointment.getDate());
         appointmentDto.setConfirmed(appointment.getConfirmed());
-        appointmentDto.setUserDto(appointment.getUser().convertUserToUserDto());
+        appointmentDto.setUserDto(convertUserToUserDto(appointment.getUser()));
         return appointmentDto;
     }
 
@@ -360,7 +360,7 @@ public class DtoAndEntityConvertUtil {
         recipient.setPhone(recipientDto.getPhone());
         recipient.setAccountNumber(recipientDto.getAccountNumber());
         recipient.setDescription(recipientDto.getDescription());
-        recipient.setUser(recipientDto.getUser());
+        recipient.setUser(DtoAndEntityConvertUtil.convertUserDtoToUser(recipientDto.getUserDto()));
         return recipient;
     }
 
@@ -384,7 +384,7 @@ public class DtoAndEntityConvertUtil {
         recipientDto.setPhone(recipient.getPhone());
         recipientDto.setAccountNumber(recipient.getAccountNumber());
         recipientDto.setDescription(recipient.getDescription());
-        recipientDto.setUser(recipient.getUser());
+        recipientDto.setUserDto(DtoAndEntityConvertUtil.convertUserToUserDto(recipient.getUser()));
         return recipientDto;
     }
 
