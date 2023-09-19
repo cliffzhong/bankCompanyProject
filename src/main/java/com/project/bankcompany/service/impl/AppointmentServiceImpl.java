@@ -1,6 +1,7 @@
 package com.project.bankcompany.service.impl;
 
 import com.project.bankcompany.dao.AppointmentDao;
+import com.project.bankcompany.dao.UserDao;
 import com.project.bankcompany.dto.AppointmentDto;
 import com.project.bankcompany.dto.RoleDto;
 import com.project.bankcompany.dto.UserDto;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -25,9 +27,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private AppointmentDao appointmentDao;
 
+    @Autowired
+    private UserDao userDao;
+
     @Override
-    public AppointmentDto createAppointment(AppointmentDto appointmentDto) {
-        Appointment appointment = DtoAndEntityConvertUtil.convertAppointmentDtoToAppointment(appointmentDto);
+    public AppointmentDto createAppointment(AppointmentDto appointmentDto, String username) {
+        Appointment appointment = DtoAndEntityConvertUtil.convertAppointmentDtoToAppointmentWithoutUser(appointmentDto);
+        User user = userDao.findByUsername(username);
+        appointment.setUser(user);
+        appointment.setDate(LocalDate.now());
         Appointment savedAppointment = appointmentDao.save(appointment);
         AppointmentDto savedAppointmentDto = DtoAndEntityConvertUtil.convertAppointmentToAppointmentDto(savedAppointment);
         return savedAppointmentDto;

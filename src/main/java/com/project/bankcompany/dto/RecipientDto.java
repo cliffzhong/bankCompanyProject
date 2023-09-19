@@ -21,7 +21,8 @@ public class RecipientDto {
 
     private String description;
 
-    private User user;
+    @JsonIgnore
+    private UserDto userDto;
 
     public Long getId() {
         return id;
@@ -71,11 +72,11 @@ public class RecipientDto {
         this.description = description;
     }
 
-    public User getUser() {
-        return user;
+    public UserDto getUserDto() {
+        return userDto;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 }

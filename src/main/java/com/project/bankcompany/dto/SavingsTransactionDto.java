@@ -1,5 +1,6 @@
 package com.project.bankcompany.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.bankcompany.entity.SavingsAccount;
 
 import java.math.BigDecimal;
@@ -25,6 +26,7 @@ public class SavingsTransactionDto {
     private String status;
     private float amount;
     private BigDecimal availableBalance;
+    @JsonIgnore
     private SavingsAccount savingsAccount;
 
     public Long getId() {

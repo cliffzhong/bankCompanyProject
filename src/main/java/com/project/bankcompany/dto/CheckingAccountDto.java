@@ -20,6 +20,7 @@ public class CheckingAccountDto {
 
     private BigDecimal accountBalance;
 
+    @JsonIgnore
     private List<CheckingTransactionDto> checkingTransactionDtoList;
 
     public CheckingAccount convertCheckingAccountDtoToCheckingAccount() {

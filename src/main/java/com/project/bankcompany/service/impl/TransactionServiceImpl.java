@@ -91,7 +91,9 @@ public class TransactionServiceImpl implements TransactionService {
         CheckingAccount checkingAccount = DtoAndEntityConvertUtil.convertCheckingAccountDtoToCheckingAccount(checkingAccountDto);
         SavingsAccount savingsAccount = DtoAndEntityConvertUtil.convertSavingsAccountDtoToSavingsAccount(savingsAccountDto);
 
+
         if (transferFrom.equalsIgnoreCase("Checking") && transferTo.equalsIgnoreCase("Savings")) {
+
             checkingAccount.setAccountBalance(checkingAccount.getAccountBalance().subtract(new BigDecimal(amount)));
             savingsAccount.setAccountBalance(savingsAccount.getAccountBalance().add(new BigDecimal(amount)));
             checkingAccountDao.save(checkingAccount);

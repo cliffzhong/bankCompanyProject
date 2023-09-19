@@ -1,5 +1,6 @@
 package com.project.bankcompany.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.bankcompany.entity.CheckingAccount;
 
 import javax.persistence.Column;
@@ -36,6 +37,7 @@ public class CheckingTransactionDto {
 
     private BigDecimal availableBalance;
 
+    @JsonIgnore
     private CheckingAccount checkingAccount;
 
     public Long getId() {

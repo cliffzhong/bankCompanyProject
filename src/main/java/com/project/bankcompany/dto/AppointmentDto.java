@@ -1,5 +1,6 @@
 package com.project.bankcompany.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.bankcompany.entity.Appointment;
 import com.project.bankcompany.entity.User;
 
@@ -20,18 +21,19 @@ public class AppointmentDto {
 
     private boolean confirmed;
 
+    @JsonIgnore
     private UserDto userDto;
 
-    private Appointment convertAppointmentDtoToAppointment(AppointmentDto appointmentDto){
-        Appointment appointment = new Appointment() ;
-        appointment.setId(getId());
-        appointment.setDate(getDate());
-        appointment.setLocation(getLocation());
-        appointment.setDescription(getDescription());
-        appointment.setConfirmed(getConfirmed());
-        appointment.setUser(getUserDto().convertUserDtoToUser());
-        return appointment;
-    }
+//    private Appointment convertAppointmentDtoToAppointment(AppointmentDto appointmentDto){
+//        Appointment appointment = new Appointment() ;
+//        appointment.setId(getId());
+//        appointment.setDate(getDate());
+//        appointment.setLocation(getLocation());
+//        appointment.setDescription(getDescription());
+//        appointment.setConfirmed(getConfirmed());
+//        appointment.setUser(getUserDto().convertUserDtoToUser());
+//        return appointment;
+//    }
 
     public Long getId() {
         return id;
