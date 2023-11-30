@@ -1,6 +1,7 @@
 package com.project.bankcompany.util;
 
 import com.github.fluent.hibernate.cfg.scanner.EntityScanner;
+import jdk.dynalink.beans.StaticClass;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,6 +11,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Properties;
 
@@ -17,6 +19,9 @@ public class HibernateUtil {
     private static Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
 
     private HibernateUtil() {}
+
+    @Value("${DATABASE_URL}")
+    private static String  databsdeUrl;
 
     private static SessionFactory sessionFactory;
 
@@ -31,7 +36,7 @@ public class HibernateUtil {
     private static SessionFactory loadSessionFatory() {
         String dbDriver = "org.postgresql.Driver";
         String dbDialect = "org.hibernate.dialect.PostgreSQL9Dialect";
-        String dbUrl = "jdbc:postgresql://localhost:5432/Bank";
+        String dbUrl = databsdeUrl;
         String dbUser = "admin";
         String dbPassword = "password";
 

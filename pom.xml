@@ -11,8 +11,8 @@
 	<groupId>com.project</groupId>
 	<artifactId>bankcompany</artifactId>
 
-	<packaging>war</packaging>
-<!--	<packaging>jar</packaging>-->
+<!--	<packaging>war</packaging>-->
+	<packaging>jar</packaging>
 
 	<version>0.0.1-SNAPSHOT</version>
 	<name>bankcompany</name>
@@ -55,11 +55,11 @@
 		</dependency>
 
 <!--		<Instruct spring boot not to use inbuilt tomcat >-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.flywaydb</groupId>
@@ -112,7 +112,8 @@
 				<version>9.9.0</version>
 				<configuration>
 					<driver>org.postgresql.Driver</driver>
-					<url>jdbc:postgresql://localhost:5432/Bank</url>
+					<!--suppress UnresolvedMavenProperty -->
+					<url>${DATABASE_URL}</url>
 					<user>admin</user>
 					<password>password</password>
 					<cleanDisabled>false</cleanDisabled>
