@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.DispatcherType;
@@ -45,19 +46,19 @@ public class JwtFilter extends OncePerRequestFilter {
     @Value("${EXTERNAL_AUTH_URI}")
     private String AUTH_URI_EXTERNAL;
 
-//    @Override
-//    public void initFilterBean() throws ServletException{
-////        WebApplicationContext webApplicationContext=
-////                WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-////        //reference to bean from app context
-////        jwtService = webApplicationContext.getBean(JWTServiceImpl.class);
-////        userService = webApplicationContext.getBean(UserService.class);
-//
-//        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, getServletContext());
-//
-//        //do something with your bean
-//        //propertyValue = yourBeanToInject.getValue("propertyName");
-//    }
+    @Override
+    public void initFilterBean() throws ServletException{
+//        WebApplicationContext webApplicationContext=
+//                WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+//        //reference to bean from app context
+//        jwtService = webApplicationContext.getBean(JWTServiceImpl.class);
+//        userService = webApplicationContext.getBean(UserService.class);
+
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, getServletContext());
+
+        //do something with your bean
+        //propertyValue = yourBeanToInject.getValue("propertyName");
+    }
 
 
     @Override

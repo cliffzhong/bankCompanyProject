@@ -2,6 +2,7 @@ package com.project.bankcompany.daoimpl.sproingdatajpa;
 
 import com.project.bankcompany.dao.CheckingAccountDao;
 import com.project.bankcompany.daoimpl.repository.CheckingAccountRepository;
+import com.project.bankcompany.entity.Appointment;
 import com.project.bankcompany.entity.CheckingAccount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository("CheckingAccountDaoSpringDataJPAImpl")
 public class CheckingAccountDaoSpringDataJPAImpl implements CheckingAccountDao {
@@ -66,7 +68,10 @@ public class CheckingAccountDaoSpringDataJPAImpl implements CheckingAccountDao {
 
     @Override
     public CheckingAccount findCheckingAccountById(Long id) {
-        CheckingAccount checkingAccount = checkingAccountRepository.getReferenceById(id);
+        CheckingAccount checkingAccount = null;
+        Optional<CheckingAccount> checkingAccountOptional = checkingAccountRepository.findById(id);
+        if(checkingAccountOptional.isPresent())
+            checkingAccount = checkingAccountOptional.get();
         return checkingAccount;
     }
 }

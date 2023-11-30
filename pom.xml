@@ -10,6 +10,10 @@
 	</parent>
 	<groupId>com.project</groupId>
 	<artifactId>bankcompany</artifactId>
+
+<!--	<packaging>war</packaging>-->
+	<packaging>jar</packaging>
+
 	<version>0.0.1-SNAPSHOT</version>
 	<name>bankcompany</name>
 	<description>Demo project for Spring Boot</description>
@@ -50,6 +54,13 @@
 			<version>1.11.812</version>
 		</dependency>
 
+<!--		<Instruct spring boot not to use inbuilt tomcat >-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
@@ -88,6 +99,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>bankCompany</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -100,7 +112,8 @@
 				<version>9.9.0</version>
 				<configuration>
 					<driver>org.postgresql.Driver</driver>
-					<url>jdbc:postgresql://localhost:5432/Bank</url>
+					<!--suppress UnresolvedMavenProperty -->
+					<url>${DATABASE_URL}</url>
 					<user>admin</user>
 					<password>password</password>
 					<cleanDisabled>false</cleanDisabled>
