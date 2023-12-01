@@ -9,34 +9,9 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication
-@ServletComponentScan
-public class BankCompanyApplication {
-
-	private static final Logger logger = LoggerFactory.getLogger(BankCompanyApplication.class.getName());
-
-	public static void main(String[] args) {
-		SpringApplication.run(BankCompanyApplication.class, args);
-
-		logger.trace("======= BankCompanyApplication, this is a trace level logger info from {}", "Cliff");
-		logger.debug("======= BankCompanyApplication, this is a debug level logger info from {}", "Cliff");
-		logger.info("======= BankCompanyApplication, this is a info level logger info from {}", "Cliff");
-		logger.warn("======= BankCompanyApplication, this is a warn level logger info from {}", "Cliff");
-		logger.error("======= BankCompanyApplication, this is a error level logger info from {}", "Cliff");
-
-	}
-
-}
-
-
-
-
-/*
-//This is for development NOT using inbuilt tomcat
-*/
 //@SpringBootApplication
 //@ServletComponentScan
-//public class BankCompanyApplication extends SpringBootServletInitializer {
+//public class BankCompanyApplication {
 //
 //	private static final Logger logger = LoggerFactory.getLogger(BankCompanyApplication.class.getName());
 //
@@ -51,9 +26,34 @@ public class BankCompanyApplication {
 //
 //	}
 //
-//	@Override
-//	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder){
-//		return builder.sources(BankCompanyApplication.class);
-//	}
-//
 //}
+
+
+
+
+/*
+//This is for development NOT using inbuilt tomcat
+*/
+@SpringBootApplication
+@ServletComponentScan
+public class BankCompanyApplication extends SpringBootServletInitializer {
+
+	private static final Logger logger = LoggerFactory.getLogger(BankCompanyApplication.class.getName());
+
+	public static void main(String[] args) {
+		SpringApplication.run(BankCompanyApplication.class, args);
+
+		logger.trace("======= BankCompanyApplication, this is a trace level logger info from {}", "Cliff");
+		logger.debug("======= BankCompanyApplication, this is a debug level logger info from {}", "Cliff");
+		logger.info("======= BankCompanyApplication, this is a info level logger info from {}", "Cliff");
+		logger.warn("======= BankCompanyApplication, this is a warn level logger info from {}", "Cliff");
+		logger.error("======= BankCompanyApplication, this is a error level logger info from {}", "Cliff");
+
+	}
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder){
+		return builder.sources(BankCompanyApplication.class);
+	}
+
+}
